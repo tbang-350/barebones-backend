@@ -23,7 +23,7 @@ public class User {
     private String lastName;
 
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns =
             @JoinColumn(name = "user_id")
@@ -32,9 +32,9 @@ public class User {
             @JoinColumn(name = "role_id")
 
     )
-    private List<Role> roles;
+    private Set<Role> roles;
 
-    public User(String userName, String userPassword, String firstName, String lastName, List<Role> roles) {
+    public User(String userName, String userPassword, String firstName, String lastName, Set<Role> roles) {
         this.userName = userName;
         this.userPassword = userPassword;
         this.firstName = firstName;

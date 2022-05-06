@@ -5,12 +5,9 @@ import com.basic.barebones.repository.UserRepository;
 import com.basic.barebones.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -22,9 +19,14 @@ public class UserController {
     @Autowired
     private final UserRepository userRepository;
 
-    @PostMapping("/registerUser")
+    @PostMapping("/registerContractor")
     public User registerContractor(User user){
-        return userService.registerUser(user);
+        return userService.registerContractor(user);
+    }
+
+    @PostMapping("/registerEmployee")
+    public User registerEmployee(User user){
+        return userService.registerEmployee(user);
     }
 
     @GetMapping("/getAllUsers")
@@ -32,12 +34,12 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @DeleteMapping(path = "{user_id}")
+    @DeleteMapping("/deleteUser/{user_id}")
     public void deleteUser(@PathVariable("user_id") Long user_id){
         userService.deleteUser(user_id);
     }
 
-    @PutMapping(path = "{user_id}")
+    @PutMapping("/updateUser/{user_id}")
     public void updateUser(
             @PathVariable("user_id") Long user_id,
             @RequestParam(required = false) String userName,

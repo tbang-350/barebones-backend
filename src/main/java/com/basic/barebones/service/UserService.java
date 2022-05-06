@@ -20,13 +20,37 @@ public class UserService {
     @Autowired
     private final RoleRepository roleRepository;
 
-    public User registerUser(User user){
+    public User registerContractor(User user){
 
         Optional<User> contractorOptional = userRepository.findUserByUsername(user.getUserName());
 
         if (contractorOptional.isPresent()){
             throw new IllegalStateException("Contractor already exists");
         }
+
+        Role role = roleRepository.findByRoleName("Contractor").get();
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
+        user.setRoles((Set<Role>) roles);
+
+        return userRepository.save(user);
+    }
+
+    public User registerEmployee(User user){
+
+        Optional<User> employeeOptional = userRepository.findUserByUsername(user.getUserName());
+
+        if (employeeOptional.isPresent()){
+            throw new IllegalStateException("Employee already exists");
+        }
+
+        Role emp_role = roleRepository.findByRoleName("Employee").get();
+
+        Set<Role> emp_roles = new HashSet<>();
+        emp_roles.add(emp_role);
+        user.setRoles((Set<Role>) emp_roles);
+
 
         return userRepository.save(user);
     }
