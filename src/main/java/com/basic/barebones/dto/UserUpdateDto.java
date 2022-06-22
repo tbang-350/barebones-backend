@@ -10,18 +10,15 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto implements Serializable {
-
+public class UserUpdateDto implements Serializable {
     private final static long serialVersionUID = 1L;
 
+    private Long user_id;
     private String firstName;
     private String lastName;
     private String email;
     private String userName;
     private String userPassword;
     private String phoneNumber;
-    private LocalDateTime registeredAt;
-
-//    private Boolean employed;
-
+//    private LocalDateTime registeredAt;
 }

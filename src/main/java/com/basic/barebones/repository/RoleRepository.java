@@ -12,4 +12,7 @@ import java.util.Optional;
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
     Optional<Role> findByRoleName(String roleName);
+
+    @Query(value = "select * from roles",nativeQuery = true)
+    List<Role> getRoles();
 }

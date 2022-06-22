@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -21,6 +24,11 @@ public class User {
     private String userPassword;
     private String firstName;
     private String lastName;
+    private String email;
+    private String phoneNumber;
+    private LocalDateTime registeredAt;
+
+
 
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -34,11 +42,14 @@ public class User {
     )
     private Set<Role> roles;
 
-    public User(String userName, String userPassword, String firstName, String lastName, Set<Role> roles) {
+    public User(String userName, String userPassword, String firstName, String lastName, String email, String phoneNumber, LocalDateTime registeredAt, Set<Role> roles) {
         this.userName = userName;
         this.userPassword = userPassword;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.registeredAt = registeredAt;
         this.roles = roles;
     }
 }

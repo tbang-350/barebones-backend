@@ -1,13 +1,19 @@
 package com.basic.barebones.service;
 
+import com.basic.barebones.dto.UserDto;
+import com.basic.barebones.dto.UserUpdateDto;
 import com.basic.barebones.entity.Role;
 import com.basic.barebones.entity.User;
 import com.basic.barebones.repository.RoleRepository;
 import com.basic.barebones.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -20,11 +26,15 @@ public class UserService {
     @Autowired
     private final RoleRepository roleRepository;
 
-    public User registerContractor(User user){
+    private final ModelMapper modelMapper;
+
+    public User registerContractor(UserDto userDto) {
+
+        User user = modelMapper.map(userDto, User.class);
 
         Optional<User> contractorOptional = userRepository.findUserByUsername(user.getUserName());
 
-        if (contractorOptional.isPresent()){
+        if (contractorOptional.isPresent()) {
             throw new IllegalStateException("Contractor already exists");
         }
 
@@ -33,15 +43,18 @@ public class UserService {
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         user.setRoles((Set<Role>) roles);
+        user.setRegisteredAt(LocalDateTime.now());
 
         return userRepository.save(user);
     }
 
-    public User registerEmployee(User user){
+    public User registerEmployee(UserDto userDto) {
+
+        User user = modelMapper.map(userDto, User.class);
 
         Optional<User> employeeOptional = userRepository.findUserByUsername(user.getUserName());
 
-        if (employeeOptional.isPresent()){
+        if (employeeOptional.isPresent()) {
             throw new IllegalStateException("Employee already exists");
         }
 
@@ -50,6 +63,7 @@ public class UserService {
         Set<Role> emp_roles = new HashSet<>();
         emp_roles.add(emp_role);
         user.setRoles((Set<Role>) emp_roles);
+        user.setRegisteredAt(LocalDateTime.now());
 
 
         return userRepository.save(user);
@@ -70,30 +84,32 @@ public class UserService {
         userRepository.deleteById(user_id);
     }
 
+   public ResponseEntity<User> updateContractor(UserUpdateDto userUpdateDto){
+       User user = modelMapper.map(userUpdateDto, User.class);
 
-    public void updateUser(Long user_id, String userName, String userPassword, String firstName, String lastName) {
-        User user = userRepository.findById(user_id)
-                .orElseThrow(() -> new IllegalStateException("user does not exist"));
+       Role emp_role = roleRepository.findByRoleName("Contractor").get();
 
-        if (userName != null && userName.length() > 0 && !Objects.equals(user.getUserName(), userName)){
-            Optional<User> userOptional = userRepository.findUserByUsername(userName);
+       Set<Role> emp_roles = new HashSet<>();
+       emp_roles.add(emp_role);
+       user.setRoles((Set<Role>) emp_roles);
+       User updatedUser = userRepository.save(user);
 
-            if (userOptional.isPresent()){
-                throw new IllegalStateException("user exixsts");
-            }
-            user.setUserName(userName);
-        }
+       return ResponseEntity.ok(updatedUser );
+   }
 
-        if (userPassword != null && userPassword.length() > 0 && !Objects.equals(user.getUserPassword(), userPassword)){
-            user.setUserPassword(userPassword);
-        }
+    public ResponseEntity<User> updateEmployee(UserUpdateDto userUpdateDto){
+        User user = modelMapper.map(userUpdateDto, User.class);
 
-        if (firstName != null && firstName.length() > 0 && !Objects.equals(user.getFirstName(), firstName)){
-            user.setFirstName(firstName);
-        }
+        Role emp_role = roleRepository.findByRoleName("Employee").get();
 
-        if (lastName != null && lastName.length() > 0 && !Objects.equals(user.getLastName(), lastName)){
-            user.setLastName(lastName);
-        }
+        Set<Role> emp_roles = new HashSet<>();
+        emp_roles.add(emp_role);
+        user.setRoles((Set<Role>) emp_roles);
+        User updatedUser = userRepository.save(user);
+
+
+        return ResponseEntity.ok(updatedUser );
     }
+
+
 }

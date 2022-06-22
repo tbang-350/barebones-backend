@@ -1,16 +1,27 @@
 package com.basic.barebones.controller;
 
+import com.basic.barebones.dto.UserDto;
+import com.basic.barebones.dto.UserUpdateDto;
+import com.basic.barebones.entity.Role;
 import com.basic.barebones.entity.User;
+import com.basic.barebones.exception.ResourceNotFoundException;
+import com.basic.barebones.repository.RoleRepository;
 import com.basic.barebones.repository.UserRepository;
 import com.basic.barebones.service.UserService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin("http://localhost:4200")
 public class UserController {
 
     @Autowired
@@ -19,14 +30,18 @@ public class UserController {
     @Autowired
     private final UserRepository userRepository;
 
+    private final RoleRepository roleRepository;
+
+    private final ModelMapper modelMapper;
+
     @PostMapping("/registerContractor")
-    public User registerContractor(User user){
-        return userService.registerContractor(user);
+    public User registerContractor(@RequestBody UserDto userDto){
+        return userService.registerContractor(userDto);
     }
 
     @PostMapping("/registerEmployee")
-    public User registerEmployee(User user){
-        return userService.registerEmployee(user);
+    public User registerEmployee(@RequestBody UserDto userDto){
+        return userService.registerEmployee(userDto);
     }
 
     @GetMapping("/getAllUsers")
@@ -34,19 +49,31 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @GetMapping("/getContractors")
+    public List<User> getContractors(){
+        return userRepository.findAllContractors();
+    }
+
+    @GetMapping("/getEmployees")
+    public List<User> getEmployee(){
+        return userRepository.findAllEmployees();
+    }
+
     @DeleteMapping("/deleteUser/{user_id}")
     public void deleteUser(@PathVariable("user_id") Long user_id){
         userService.deleteUser(user_id);
     }
 
-    @PutMapping("/updateUser/{user_id}")
-    public void updateUser(
-            @PathVariable("user_id") Long user_id,
-            @RequestParam(required = false) String userName,
-            @RequestParam(required = false) String userPassword,
-            @RequestParam(required = false) String firstName,
-            @RequestParam(required = false) String lastName
-    ){
-        userService.updateUser(user_id,userName,userPassword,firstName,lastName);
+    @PutMapping("/updateContractor")
+    public ResponseEntity<User> updateContractor(@RequestBody UserUpdateDto userUpdateDto){
+        return userService.updateContractor(userUpdateDto);
     }
+
+    @PutMapping("/updateEmployee")
+    public ResponseEntity<User> updateEmployee(@RequestBody UserUpdateDto userUpdateDto){
+        return userService.updateEmployee(userUpdateDto);
+    }
+
+
+
 }

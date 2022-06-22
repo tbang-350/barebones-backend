@@ -8,30 +8,40 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @Configuration
 public class RoleConfig {
 
     @Bean
-    CommandLineRunner commandLineRunner(RoleRepository roleRepository){
+    CommandLineRunner commandLineRunner(RoleRepository roleRepository) {
         return args -> {
-            Role adminRole = new Role(
-                    "Admin",
-                    "Admin role"
-            );
+            List<Role> roles = roleRepository.getRoles();
 
-            Role contractorRole = new Role(
-                    "Contractor",
-                    "Contractor role"
-            );
+            if(roles.isEmpty()){
+                Role adminRole = new Role(
+                        "Admin",
+                        "Admin role"
+                );
 
-            Role employeeRole = new Role(
-                    "Employee",
-                    "Employee role"
-            );
+                Role contractorRole = new Role(
+                        "Contractor",
+                        "Contractor role"
+                );
 
-            roleRepository.saveAll(List.of(adminRole,contractorRole,employeeRole));
+                Role employeeRole = new Role(
+                        "Employee",
+                        "Employee role"
+                );
+
+                roleRepository.saveAll(List.of(adminRole, contractorRole, employeeRole));
+            }
+
+
+
+
+
         };
     }
 }
