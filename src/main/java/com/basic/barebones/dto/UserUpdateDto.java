@@ -20,5 +20,5 @@ public class UserUpdateDto implements Serializable {
     private String userName;
     private String userPassword;
     private String phoneNumber;
-//    private LocalDateTime registeredAt;
+    private LocalDateTime registeredAt;
 }
