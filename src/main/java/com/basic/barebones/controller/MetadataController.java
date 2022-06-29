@@ -13,8 +13,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 @AllArgsConstructor
-@RestController("http://localhost:4200")
-@CrossOrigin()
+@RestController
+@CrossOrigin("http://localhost:4200")
 public class MetadataController {
 
     @Autowired
@@ -35,5 +35,10 @@ public class MetadataController {
     @GetMapping("/getMetadata")
     public List<Metadata> getAllMetadata(){
         return metadataRepository.findAll();
+    }
+
+    @GetMapping("/countMetadata")
+    public int countMetadata(){
+        return metadataRepository.countMetadata();
     }
 }

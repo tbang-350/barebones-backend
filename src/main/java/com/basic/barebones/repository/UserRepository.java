@@ -20,4 +20,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = "select * from users,user_roles where users.user_id=user_roles.user_id and user_roles.role_id = 3",nativeQuery = true)
     public List<User> findAllEmployees();
+
+    @Query(value = "select count(user_name) from users,user_roles where users.user_id=user_roles.user_id and user_roles.role_id = 2",nativeQuery = true)
+    public int countAllContractors();
+
+    @Query(value = "select count(user_name) from users,user_roles where users.user_id=user_roles.user_id and user_roles.role_id = 3",nativeQuery = true)
+    public int countAllEmployees();
+
+    @Query(value = "select count(user_name) from users",nativeQuery = true)
+    public int countAllUsers();
 }

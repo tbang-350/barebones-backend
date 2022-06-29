@@ -2,9 +2,7 @@ package com.basic.barebones.controller;
 
 import com.basic.barebones.dto.UserDto;
 import com.basic.barebones.dto.UserUpdateDto;
-import com.basic.barebones.entity.Role;
 import com.basic.barebones.entity.User;
-import com.basic.barebones.exception.ResourceNotFoundException;
 import com.basic.barebones.repository.RoleRepository;
 import com.basic.barebones.repository.UserRepository;
 import com.basic.barebones.service.UserService;
@@ -14,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -74,6 +69,18 @@ public class UserController {
         return userService.updateEmployee(userUpdateDto);
     }
 
+    @GetMapping("/countContractors")
+    public int countContractors(){
+       return  userRepository.countAllContractors();
+    }
 
+    @GetMapping("/countEmployees")
+    public int countEmployees(){
+        return userRepository.countAllEmployees();
+    }
+    @GetMapping("/countAllUsers")
+    public int countAllUsers(){
+        return userRepository.countAllUsers();
+    }
 
 }
