@@ -23,4 +23,12 @@ public class Metadata {
     private Double longitude;
     private String description;
     private LocalDate registerDate;
+
+    public Metadata(String name, Double latitude, Double longitude, String description, LocalDate registerDate) {
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.description = description;
+        this.registerDate = registerDate;
+    }
 }

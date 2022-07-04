@@ -2,6 +2,7 @@ package com.basic.barebones.controller;
 
 import com.basic.barebones.dto.UserDto;
 import com.basic.barebones.dto.UserUpdateDto;
+import com.basic.barebones.entity.Chartdata;
 import com.basic.barebones.entity.User;
 import com.basic.barebones.repository.RoleRepository;
 import com.basic.barebones.repository.UserRepository;
@@ -81,6 +82,11 @@ public class UserController {
     @GetMapping("/countAllUsers")
     public int countAllUsers(){
         return userRepository.countAllUsers();
+    }
+
+    @GetMapping("/getChartdata")
+    public Chartdata getChartdata(){
+        return userRepository.getChartdata();
     }
 
 }

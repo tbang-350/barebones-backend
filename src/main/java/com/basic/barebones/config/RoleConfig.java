@@ -37,11 +37,6 @@ public class RoleConfig {
 
                 roleRepository.saveAll(List.of(adminRole, contractorRole, employeeRole));
             }
-
-
-
-
-
         };
     }
 }

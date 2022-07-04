@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -24,6 +25,11 @@ public class MetadataController {
     private final MetadataService metadataService;
 
     private ModelMapper mapper;
+
+    @PostConstruct
+    public void initMetadata(){
+        metadataService.initMetadata();
+    }
 
     @PostMapping("/addMetadata")
     public Metadata addMetadata(@RequestBody MetadataDto metadataDto){
