@@ -1,10 +1,10 @@
 package com.basic.barebones.repository;
 
-import com.basic.barebones.entity.Chartdata;
+import com.basic.barebones.entity.EmployeeChartdata;
+import com.basic.barebones.entity.MetadataChartdata;
 import com.basic.barebones.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,9 +31,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "select count(user_name) from users",nativeQuery = true)
     public int countAllUsers();
 
-    @Query(value = "select sum(if(month = 'Jan' ,total,0)) as 'Jan' ,sum(if(month = 'Feb' ,total,0)) as 'Feb',sum(if(month = 'Mar' ,total,0)) as 'Mar',sum(if(month = 'Apr' ,total,0)) as 'Apr',"
-            +"sum(if(month = 'May' ,total,0)) as 'May',sum(if(month = 'Jun' ,total,0)) as 'Jun',sum(if(month = 'Jul' ,total,0)) as 'Jul',sum(if(month = 'Aug' ,total,0)) as 'Aug',sum(if(month = 'Sep' ,total,0)) as 'Sep',"
-            +"sum(if(month = 'Oct' ,total,0)) as 'Oct',sum(if(month = 'Nov' ,total,0)) as 'Nov',sum(if(month = 'Dec' ,total,0)) as 'Dec'"
-            +"from (select min(date_format(registered_at ,'%b')) as month ,count(user_name) as total from users group by month(registered_at) order by month(registered_at)) as users",nativeQuery = true)
-    Chartdata getChartdata();
+    @Query(value = "SELECT sum(IF(MONTH = 'jan', total, 0)) AS 'jan', sum(IF(MONTH = 'feb', total, 0)) AS 'feb', sum(IF(MONTH = 'mar', total, 0)) AS 'mar', SUM(IF(MONTH = 'apr', total, 0)) AS 'apr', SUM(IF(MONTH = 'may', total, 0)) AS 'may',"
+            +" SUM(IF(MONTH = 'jun', total, 0)) AS 'jun', SUM(IF(MONTH = 'jul', total, 0)) AS 'jul', SUM(IF(MONTH = 'aug', total, 0)) AS 'aug', "
+            +"SUM(IF(MONTH = 'sep', total, 0)) AS 'sep', SUM(IF(MONTH = 'oct', total, 0)) AS 'oct', SUM(IF(MONTH = 'nov', total, 0)) AS 'nov', SUM(IF(MONTH = 'dec', total, 0)) AS 'dec' "
+            +"FROM ( SELECT MIN(DATE_FORMAT(registered_at, '%b')) AS MONTH, COUNT(user_name) AS total FROM users GROUP BY MONTH(registered_at) ORDER BY MONTH(registered_at) ) AS users",nativeQuery = true)
+    EmployeeChartdata getChartdata();
+
 }

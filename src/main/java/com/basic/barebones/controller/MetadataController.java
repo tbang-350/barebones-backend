@@ -2,6 +2,7 @@ package com.basic.barebones.controller;
 
 import com.basic.barebones.dto.MetadataDto;
 import com.basic.barebones.entity.Metadata;
+import com.basic.barebones.entity.MetadataChartdata;
 import com.basic.barebones.repository.MetadataRepository;
 import com.basic.barebones.service.MetadataService;
 import lombok.AllArgsConstructor;
@@ -46,5 +47,10 @@ public class MetadataController {
     @GetMapping("/countMetadata")
     public int countMetadata(){
         return metadataRepository.countMetadata();
+    }
+
+    @GetMapping("/getMetachartdata")
+    public MetadataChartdata getMetaChartdata(){
+        return metadataRepository.getMetachartdata();
     }
 }
