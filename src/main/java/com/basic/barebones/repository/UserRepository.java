@@ -45,4 +45,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             +"FROM users,user_roles WHERE users.user_id=user_roles.user_id and user_roles.role_id = 2 GROUP BY MONTH(registered_at) ORDER BY MONTH(registered_at) ) AS users",nativeQuery = true)
     ContractorChartdata getContractorChartdata();
 
+    @Query(value = "select * from users where user_name=?1 and user_password=?2",nativeQuery = true)
+    public User getLogin(String userName, String userPassword);
+
 }

@@ -1,5 +1,6 @@
 package com.basic.barebones.service;
 
+import com.basic.barebones.config.Sha3Util;
 import com.basic.barebones.dto.UserDto;
 import com.basic.barebones.dto.UserUpdateDto;
 import com.basic.barebones.entity.Role;
@@ -12,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -43,6 +44,8 @@ public class UserService {
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         user.setRoles((Set<Role>) roles);
+        byte[] shaInBytes = Sha3Util.digest(user.getUserPassword().getBytes(StandardCharsets.UTF_8));
+        user.setUserPassword(Sha3Util.bytesToHex(shaInBytes));
         user.setRegisteredAt(LocalDateTime.now());
 
         return userRepository.save(user);
@@ -63,8 +66,10 @@ public class UserService {
         Set<Role> emp_roles = new HashSet<>();
         emp_roles.add(emp_role);
         user.setRoles((Set<Role>) emp_roles);
+        byte[] shaInBytes = Sha3Util.digest(user.getUserPassword().getBytes(StandardCharsets.UTF_8));
+        user.setUserPassword(Sha3Util.bytesToHex(shaInBytes));
         user.setRegisteredAt(LocalDateTime.now());
-
+        System.out.println(user.getUserPassword());
 
         return userRepository.save(user);
     }
@@ -112,4 +117,10 @@ public class UserService {
     }
 
 
+
+    public User login(String userName, String userPassword) {
+        byte[] sha3Bytes = Sha3Util.digest(userPassword.getBytes(StandardCharsets.UTF_8));
+        String encrypted = Sha3Util.bytesToHex(sha3Bytes);
+        return userRepository.getLogin(userName, encrypted);
+    }
 }

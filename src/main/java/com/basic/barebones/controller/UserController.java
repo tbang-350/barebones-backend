@@ -27,9 +27,11 @@ public class UserController {
     @Autowired
     private final UserRepository userRepository;
 
-    private final RoleRepository roleRepository;
+
 
     private final ModelMapper modelMapper;
+
+
 
     @PostMapping("/registerContractor")
     public User registerContractor(@RequestBody UserDto userDto){
@@ -93,6 +95,11 @@ public class UserController {
     @GetMapping("/getContractorChartdata")
     public ContractorChartdata getContractorChartdata(){
         return userRepository.getContractorChartdata();
+    }
+
+    @GetMapping("/login/user/{user}/pass/{pass}")
+    public User login(@PathVariable("user") String userName, @PathVariable("pass") String userPassword){
+        return userService.login(userName,userPassword);
     }
 
 }

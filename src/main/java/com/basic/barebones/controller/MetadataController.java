@@ -27,10 +27,10 @@ public class MetadataController {
 
     private ModelMapper mapper;
 
-    @PostConstruct
-    public void initMetadata(){
-        metadataService.initMetadata();
-    }
+//    @PostConstruct
+//    public void initMetadata(){
+//        metadataService.initMetadata();
+//    }
 
     @PostMapping("/addMetadata")
     public Metadata addMetadata(@RequestBody MetadataDto metadataDto){
